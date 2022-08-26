@@ -1,4 +1,4 @@
- MainBuilder = function () {
+const MainBuilder = function () {
 
 
 }
@@ -109,7 +109,6 @@ this.value = this.value-[...n].reduce((acc, current) => {
       return Math.floor(Math.random() * (to - from) + from);
    }
 }
-
 
 
 
