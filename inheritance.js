@@ -105,7 +105,7 @@ this.value = this.value-[...n].reduce((acc, current) => {
       return this
    }
 
-  static random(from, to) {
+   static random(from, to) {
       return Math.floor(Math.random() * (to - from) + from);
    }
 }
