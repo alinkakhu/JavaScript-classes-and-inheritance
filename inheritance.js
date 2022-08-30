@@ -1,32 +1,19 @@
-const MainBuilder = function () {
-
+const MainBuilder = function (value) {
+   this.value = value;
 
 }
 
 MainBuilder.prototype.get = function () {
-   console.log(this.value)
-   return this
+   return this.value
 
 }
 
 MainBuilder.prototype.plus = function (...value) {
 
-   if (typeof (this.value) === 'string') {
-      this.value = [this.value,...value].reduce((acc, current) => {
-         return acc + ' ' + current
-
-      })
-
-   } else if (typeof (this.value) === 'number') {
-
-      this.value = [this.value,...value].reduce((acc, current) => {
+ this.value = [this.value,...value].reduce((acc, current) => {
          return acc + current
 
       })
-
-
-   }
-   console.log(this.value)
    return this
 }
 
@@ -35,15 +22,16 @@ MainBuilder.prototype.plus = function (...value) {
 
 
 const StringBuilder = function(value){
-   this.value = value;
+   MainBuilder.call(this, value);
 
 }
 
-Object.setPrototypeOf(StringBuilder.prototype, MainBuilder.prototype);
+StringBuilder.prototype = Object.create(MainBuilder.prototype);
+
+
 
 StringBuilder.prototype.minus = function(n){
-   this.value = this.value.slice(0, this.value.length - n)
-   console.log(this.value)
+   this.value = this.value.split('').splice(0, this.value.length - n).join('');
    return this
 
 }
@@ -55,20 +43,17 @@ StringBuilder.prototype.multiply= function(int){
 
 StringBuilder.prototype.divide = function(n){
    this.value = this.value.slice(0, Math.floor(this.value.length / n))
-   console.log(this.value)
    return this
 }
 
 StringBuilder.prototype.remove = function (str) {
    let newValue = this.value.indexOf(str);
-   this.value = this.value.slice(0, newValue) + this.value.slice(newValue+str.length).trim()
-   console.log(this.value)
+   this.value = this.value.slice(0, newValue) + this.value.slice(newValue + str.length);
    return this
 }
 
 StringBuilder.prototype.sub = function(from, n){
-   this.value = this.value.slice(from,n)
-   console.log(this.value)
+   this.value = this.value.slice(from, from + n)
    return this
 }
 
@@ -77,8 +62,8 @@ StringBuilder.prototype.sub = function(from, n){
 class Intbuilder extends MainBuilder{
 
    constructor(value) {
-   super();
-   this.value = value;
+   super(value);
+
 }
    minus(...n) {
 
@@ -92,7 +77,6 @@ this.value = this.value-[...n].reduce((acc, current) => {
 
    divide(n) {
       this.value = this.value / n
-      console.log(this.value);
       return this
    }
    multiply(n) {
@@ -106,10 +90,13 @@ this.value = this.value-[...n].reduce((acc, current) => {
    }
 
    static random(from, to) {
-      return Math.floor(Math.random() * (to - from) + from);
+      return Math.floor(Math.random() * (to - from +1)) + from;
    }
 }
 
 
+const builder = new StringBuilder('Hello');
+
+console.log(builder.plus(' all').get())
 
 
